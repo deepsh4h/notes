@@ -44,7 +44,7 @@ sudo chown prometheus:prometheus /var/lib/prometheus
 prometheus --config.file=/etc/prometheus/prometheus.yml 
 ```
 
-## System Service
+## Systemd Service Script
 ```` /etc/systemd/system/prometheus.service ````
 ````
 [Unit]
@@ -65,3 +65,12 @@ ExecStart=/usr/local/bin/prometheus \
 [Install]
 WantedBy=multi-user.target
 ````
+
+## Systemd Service Commands
+
+```
+sudo systemctl daemon-reload
+sudo systemctl start prometheus
+sudo systemctl enable prometheus
+sudo systemctl status prometheus
+```
