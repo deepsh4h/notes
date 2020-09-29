@@ -39,4 +39,6 @@ sudo chown prometheus:prometheus /var/lib/prometheus
 
 ## RUN Command
 
-```` prometheus --config.file=/etc/prometheus/prometheus.yml ````
+```
+prometheus --config.file=/etc/prometheus/prometheus.yml 
+```
