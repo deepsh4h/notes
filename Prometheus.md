@@ -13,3 +13,27 @@
 2. Visualization
 3. Alerting
 
+## Prometheus Architecture
+
+1. Prometheus Server - A central server that gathers metrics and makes them available.
+2. Exporters - Agents that exposde that that is collected by the Prom server.
+3. Alertmanager - Sends alerts triggered by metric data.
+
+Note:- Prometheus works on a Pull model.
+
+## Install Script for Ubuntu 16.x,18.x,20.x
+
+````
+sudo useradd -M -r -s /bin/false prometheus
+sudo mkdir /etc/prometheus /var/lib/prometheus
+cd /tmp & wget https://github.com/prometheus/prometheus/releases/download/v2.21.0/prometheus-2.21.0.linux-amd64.tar.gz
+tar xzf prometheus-*.tar.gz
+rm -rf prometheus-*.tar.gz
+sudo cp prometheus-*/{prometheus,promtool} /usr/local/bin/
+sudo chown prometheus:prometheus /usr/local/bin/{prometheus,promtool}
+sudo cp -r prometheus-*/{consoles,console_libraries} /etc/prometheus/
+sudo cp prometheus-*/prometheus.yml /etc/prometheus/prometheus.yml
+sudo chown -R prometheus:prometheus /etc/prometheus
+sudo chown prometheus:prometheus /var/lib/prometheus
+````
+
