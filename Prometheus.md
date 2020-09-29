@@ -87,3 +87,8 @@ Reloading the configuration for Prometheus Server without restarting the service
 ````
 sudo killall -HUP prometheus
 ````
+
+Checking if Prometheus configuration was changed ?
+
+````
+Open the URL : http://localhost:9090/api/v1/status/config
