@@ -44,7 +44,7 @@ sudo chown prometheus:prometheus /var/lib/prometheus
 prometheus --config.file=/etc/prometheus/prometheus.yml 
 ```
 
-## Systemd Service Script
+## Prometheus Server Systemd Service
 ``` /etc/systemd/system/prometheus.service ```
 ```
 [Unit]
@@ -66,7 +66,7 @@ ExecStart=/usr/local/bin/prometheus \
 WantedBy=multi-user.target
 ```
 
-## Systemd Service Commands
+## Prometheus Server Systemd Service Commands
 
 ```
 sudo systemctl daemon-reload
@@ -92,4 +92,43 @@ Checking if Prometheus configuration was changed ?
 
 ```
 Open the URL : http://localhost:9090/api/v1/status/config
+```
+
+## Node Exporter Install Script
+
+```
+sudo useradd -M -r -s /bin/false node_exporter
+cd /tmp & wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+tar xzvf node_exporter-*.tar.gz
+sudo rm -rf node_exporter-*.tar.gz
+sudo cp node_exporter-*/node_exporter /usr/local/bin/
+sudo rm -rf /tmp/node_exporter-*
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+```
+
+## Node Exporter Systemd Service
+``` /etc/systemd/system/node_exporter.service ```
+```
+[Unit]
+Description=Prometheus Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## Node Exporter Systemd Service Commands
+
+```
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter
+sudo systemctl enable node_exporter
+sudo systemctl status node_exporter
 ```
