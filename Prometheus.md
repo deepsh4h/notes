@@ -21,9 +21,10 @@
 
 Note:- Prometheus works on a Pull model.
 
-## Install Script for Ubuntu 16.x,18.x,20.x
+## Prometheus Server Installation Shell Script for Ubuntu 16.x,18.x,20.x
 
 ````
+#!/bin/bash
 sudo useradd -M -r -s /bin/false prometheus
 sudo mkdir /etc/prometheus /var/lib/prometheus
 cd /tmp & wget https://github.com/prometheus/prometheus/releases/download/v2.21.0/prometheus-2.21.0.linux-amd64.tar.gz
