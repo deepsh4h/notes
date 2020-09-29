@@ -74,3 +74,9 @@ sudo systemctl start prometheus
 sudo systemctl enable prometheus
 sudo systemctl status prometheus
 ```
+
+## Prometheus Server WebUI Access URL
+
+http://localhost:9090
+or 
+http://server-public-ip:9090
