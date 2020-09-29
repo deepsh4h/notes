@@ -23,7 +23,7 @@ Note:- Prometheus works on a Pull model.
 
 ## Prometheus Server Installation Shell Script for Ubuntu 16.x,18.x,20.x
 
-````
+```
 #!/bin/bash
 sudo useradd -M -r -s /bin/false prometheus
 sudo mkdir /etc/prometheus /var/lib/prometheus
@@ -36,7 +36,7 @@ sudo cp -r prometheus-*/{consoles,console_libraries} /etc/prometheus/
 sudo cp prometheus-*/prometheus.yml /etc/prometheus/prometheus.yml
 sudo chown -R prometheus:prometheus /etc/prometheus
 sudo chown prometheus:prometheus /var/lib/prometheus
-````
+```
 
 ## RUN Command
 
@@ -45,8 +45,8 @@ prometheus --config.file=/etc/prometheus/prometheus.yml
 ```
 
 ## Systemd Service Script
-```` /etc/systemd/system/prometheus.service ````
-````
+``` /etc/systemd/system/prometheus.service ```
+```
 [Unit]
 Description=Prometheus
 Wants=network-online.target
@@ -64,7 +64,7 @@ ExecStart=/usr/local/bin/prometheus \
 
 [Install]
 WantedBy=multi-user.target
-````
+```
 
 ## Systemd Service Commands
 
@@ -84,11 +84,12 @@ http://server-public-ip:9090
 
 Reloading the configuration for Prometheus Server without restarting the service/process
 
-````
+```
 sudo killall -HUP prometheus
-````
+```
 
 Checking if Prometheus configuration was changed ?
 
-````
+```
 Open the URL : http://localhost:9090/api/v1/status/config
+```
