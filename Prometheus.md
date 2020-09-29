@@ -81,7 +81,8 @@ http://localhost:9090
 or 
 http://server-public-ip:9090
 
-### Reloading the configuration for Prometheus Server without restarting the service/process
+
+Reloading the configuration for Prometheus Server without restarting the service/process
 
 ````
 sudo killall -HUP prometheus
