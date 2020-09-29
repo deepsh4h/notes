@@ -132,3 +132,9 @@ sudo systemctl start node_exporter
 sudo systemctl enable node_exporter
 sudo systemctl status node_exporter
 ```
+
+## Prometheus Node Exporter WebUI Access URL
+
+http://localhost:9100/metrics
+or 
+http://server-public-ip:9090/metrics
