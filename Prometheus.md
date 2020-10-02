@@ -198,3 +198,9 @@ Examples:
 * How long does an HTTP Request take to complete
 
 ![Histogram Example](https://i.imgur.com/wJfzIah.jpg)
+
+#### 4. Summary
+
+Similar to a histogram, a summary samples observations (usually things like request durations and response sizes). While it also provides a total count of observations and a sum of all observed values, it calculates configurable quantiles over a sliding time window.
+
+![Summary Example](https://i.imgur.com/AjkNV9l.jpg)
