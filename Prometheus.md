@@ -138,3 +138,28 @@ sudo systemctl status node_exporter
 http://localhost:9100/metrics
 or 
 http://server-public-ip:9090/metrics
+
+
+## Prometheus Data Model
+
+1. Timeseries Data
+
+Prometheus fundamentally stores all data as time series: streams of timestamped values belonging to the same metric and the same set of labeled dimensions. Besides stored time series, Prometheus may generate temporary derived time series as the result of queries.
+
+2. Metrics and Labels
+
+Every time series is uniquely identified by its metric name and optional key-value pairs called labels.
+Example:
+![Example](https://i.imgur.com/Anh6FXF.jpg)
+
+Where:
+**node_cpu_seconds_total** is the name of the metric
+Following are the labels which help to query the data:
+* cpu="0"
+* instance="127.0.0.1:9100"
+* job="Linux Server"
+* mode="idle"
+
+
+3. Metric Types
+
