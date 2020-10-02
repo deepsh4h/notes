@@ -163,3 +163,38 @@ Following are the labels which help to query the data:
 
 ### 3. Metric Types
 
+1. Counters
+
+A counter is a cumulative metric that represents a single monotonically increasing counter whose value can only increase or be reset to zero on restart. For example, you can use a counter to represent the number of requests served, tasks completed, or errors.
+
+Do not use a counter to expose a value that can decrease. For example, do not use a counter for the number of currently running processes; instead use a gauge.
+
+Examples:
+* No. of HTTP requests
+* No. of records processed
+* No. of application restarts
+* No. of errors
+
+![Counter Example](https://i.imgur.com/ox01r8j.jpg)
+
+2. Gauge
+
+A gauge is a metric that represents a single numerical value that can arbitrarily go up and down.
+
+Gauges are typically used for measured values like temperatures or current memory usage, but also "counts" that can go up and down, like the number of concurrent requests.
+
+Examples:
+* No. of current HTTP requests
+* CPU/Mem Usage
+* Current active threads
+
+![Gauge Example](https://i.imgur.com/j1vuYIs.jpg)
+
+3. Histogram
+
+A histogram samples observations (usually things like request durations or response sizes) and counts them in configurable buckets. It also provides a sum of all observed values.
+
+Examples:
+* How long does an HTTP Request take to complete
+
+![Histogram Example](https://i.imgur.com/wJfzIah.jpg)
