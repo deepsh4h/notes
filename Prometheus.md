@@ -163,7 +163,7 @@ Following are the labels which help to query the data:
 
 ### 3. Metric Types
 
-1. Counters
+#### 1. Counters
 
 A counter is a cumulative metric that represents a single monotonically increasing counter whose value can only increase or be reset to zero on restart. For example, you can use a counter to represent the number of requests served, tasks completed, or errors.
 
@@ -177,7 +177,7 @@ Examples:
 
 ![Counter Example](https://i.imgur.com/ox01r8j.jpg)
 
-2. Gauge
+#### 2. Gauge
 
 A gauge is a metric that represents a single numerical value that can arbitrarily go up and down.
 
@@ -190,7 +190,7 @@ Examples:
 
 ![Gauge Example](https://i.imgur.com/j1vuYIs.jpg)
 
-3. Histogram
+#### 3. Histogram
 
 A histogram samples observations (usually things like request durations or response sizes) and counts them in configurable buckets. It also provides a sum of all observed values.
 
