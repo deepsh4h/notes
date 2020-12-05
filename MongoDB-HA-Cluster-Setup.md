@@ -9,6 +9,25 @@
 |Member 1	| mongodb1.deepshah.me|
 |Member 2	| mongodb2.deepshah.me|
 
+## Installing MongoDB
+
+1. Import the public key used by the package management system
+```
+wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+```
+
+2. Create a /etc/apt/sources.list.d/mongodb-org-4.4.list
+```
+echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+```
+
+3. Reload local package database and install MongoDB latest version.
+```
+sudo apt-get update && sudo apt-get install -y mongodb-org
+```
+
+## Configuring the Replica Set
+
 1. Start each member of the replica set with the appropriate options
 
 ```
@@ -17,6 +36,16 @@ replication:
 net:
    bindIp: localhost,0.0.0.0
 ```
+```
+sudo systemctl start mongod
+```
+```
+sudo systemctl status mongod
+```
+```
+sudo systemctl enable mongod
+```
+
 
 2. Connect a mongo shell to one of the mongod instances.
 
