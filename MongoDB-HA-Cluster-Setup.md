@@ -145,6 +145,8 @@ Use rs.status() to identify the primary in the replica set.
 ```
 rs.status()
 ```
+## Force a Member to be Primary Using Database Commands¶
+
 Setting Priority (from the PRIMARY)
 ```
 cfg = rs.conf()
