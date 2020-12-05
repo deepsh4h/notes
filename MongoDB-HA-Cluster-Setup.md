@@ -145,3 +145,20 @@ Use rs.status() to identify the primary in the replica set.
 ```
 rs.status()
 ```
+Setting Priority (from the PRIMARY)
+```
+cfg = rs.conf()
+cfg.members[0].priority = 0.5
+cfg.members[1].priority = 0.5
+cfg.members[2].priority = 1
+rs.reconfig(cfg)
+```
+Force a Member to be Primary by Setting its Priority High
+1. Freeze the other secondary so that it doesnt become primary.
+```
+rs.freeze(120)
+```
+2. Make the current Primary step down
+```
+rs.stepDown(120)
+```
