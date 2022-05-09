@@ -1,10 +1,14 @@
 # Setup MongoDB HA ReplicaSet
 
+# Two types of configuration is possible with ReplicaSet
 
-## In this tutorial, the three mongod instances are associated with the following hosts:
+1. 1 x Primary + 1 x Secondary (DR) + 1 x Arbiter
+2. 1 x Primary + 2 x Secondary (1 in DC and 1 in DR)
+
+## In this tutorial, we'll go with type 2 since we require HA along with DR:
+
 
 ![MongoDB Replicaset Architecture](https://www.mongodb.com/docs/manual/images/replica-set-read-write-operations-primary.bakedsvg.svg)
-
 
 
 |Replica Set Member	| Hostname|
