@@ -194,6 +194,7 @@ This URL automatically translates to:
 mongodb://rs0.mongo-replicaset.com:27017,rs1.mongo-replicaset.com:27017,rs2.mongo-replicaset.com:27017/dbname?authSource=admin&replicaSet=rs
 ```
 
+<b>Ref:</b> https://www.mongodb.com/developer/article/srv-connection-strings/
 
 ## Write Concern for Replica Sets
 
