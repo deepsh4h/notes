@@ -172,7 +172,7 @@ Record Type	| Record Name | IP |
 |A	| rs0.mongo-replicaset.com| 40.0.0.1 |
 |A	| rs1.mongo-replicaset.com| 40.0.0.2 |
 |A	| rs2.mongo-replicaset.com| 40.0.0.3 |
-|SRV | _mongodb._tcp.rs.mongo-replicaset.com | 0 0 27017 rs0.mongo-replicaset.com<br />r0 0 27017 rs1.mongo-replicaset.com<br />0 0 27017 rs2.mongo-replicaset.com |
+|SRV | _mongodb._tcp.rs.mongo-replicaset.com | 0 0 27017 rs0.mongo-replicaset.com<br />0 0 27017 rs1.mongo-replicaset.com<br />0 0 27017 rs2.mongo-replicaset.com |
 |TXT | rs | authSource=admin&replicaSet=rs|
 
 
