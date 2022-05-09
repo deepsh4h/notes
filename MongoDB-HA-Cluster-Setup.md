@@ -1,4 +1,4 @@
-# Setup MongoDB HA ReplicaSet
+# Setup MongoDB ReplicaSets
 
 # Two types of configuration is possible with ReplicaSet
 
@@ -10,6 +10,7 @@
 
 ![MongoDB Replicaset Architecture](https://www.mongodb.com/docs/manual/images/replica-set-read-write-operations-primary.bakedsvg.svg)
 
+Example:
 
 |Replica Set Member	| Hostname|
 | ------------- | ------------- |
@@ -36,7 +37,7 @@ sudo apt-get update && sudo apt-get install -y mongodb-org
 
 ## Configuring the Replica Set
 
-1. Start each member of the replica set with the appropriate options
+1. Start each member of the replica set with the appropriate options in ```/etc/mongo/mongod.conf```:
 
 ```
 replication:
@@ -153,7 +154,7 @@ Use rs.status() to identify the primary in the replica set.
 ```
 rs.status()
 ```
-## Force a Member to be Primary Using Database Commands¶
+## Force a Member to be Primary Using Database Commands
 
 Setting Priority (from the PRIMARY)
 ```
@@ -205,3 +206,6 @@ Write concern for replica sets describe the number of data-bearing members (i.e.
 <b>[For Semi-Syncronous Replication]</b> Write operations with a write concern of ```w: 1``` require that only the primary replica set member acknowledge the write before returning write concern acknowledgment. You can specify an integer value greater than 1 to require acknowledgment from the primary and as many secondaries as needed to meet the specified value, up to the total number of data-bearing members in the replica set.
 
 <b>[For Asynchronous Replication]</b> Write operations with a write concern of ```w: 0``` require that no replica set member acknowledge the write before returning write concern acknowledgment. Requests no acknowledgment of the write operation.
+
+### Modify the default MongoDB ReplicaSets WriteConcern using the following link: https://www.mongodb.com/docs/manual/reference/command/setDefaultRWConcern/#mongodb-dbcommand-dbcmd.setDefaultRWConcern
+
