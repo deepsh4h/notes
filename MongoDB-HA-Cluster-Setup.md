@@ -3,6 +3,10 @@
 
 ## In this tutorial, the three mongod instances are associated with the following hosts:
 
+![MongoDB Replicaset Architecture](https://www.mongodb.com/docs/manual/images/replica-set-read-write-operations-primary.bakedsvg.svg)
+
+
+
 |Replica Set Member	| Hostname|
 | ------------- | ------------- |
 |Member 0	| rs0.mongo-replicaset.com|
