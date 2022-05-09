@@ -5,9 +5,9 @@
 
 |Replica Set Member	| Hostname|
 | ------------- | ------------- |
-|Member 0	| mongodb0.deepshah.me|
-|Member 1	| mongodb1.deepshah.me|
-|Member 2	| mongodb2.deepshah.me|
+|Member 0	| rs0.mongo-replicaset.com|
+|Member 1	| rs1.mongo-replicaset.com|
+|Member 2	| rs2.mongo-replicaset.com|
 
 ## Installing MongoDB
 
@@ -61,9 +61,9 @@ mongo
 rs.initiate( {
    _id : "rs0",
    members: [
-      { _id: 0, host: "mongodb0.deepshah.me:27017" },
-      { _id: 1, host: "mongodb1.deepshah.me:27017" },
-      { _id: 2, host: "mongodb2.deepshah.me:27017" }
+      { _id: 0, host: "rs0.mongo-replicaset.com:27017" },
+      { _id: 1, host: "rs1.mongo-replicaset.com:27017" },
+      { _id: 2, host: "rs2.mongo-replicaset.com:27017" }
    ]
 })
 ```
@@ -83,7 +83,7 @@ The replica set configuration object resembles the following:
    "members" : [
       {
          "_id" : 0,
-         "host" : "mongodb0.example.net:27017",
+         "host" : "rs0.mongo-replicaset.com:27017",
          "arbiterOnly" : false,
          "buildIndexes" : true,
          "hidden" : false,
@@ -96,7 +96,7 @@ The replica set configuration object resembles the following:
       },
       {
          "_id" : 1,
-         "host" : "mongodb1.example.net:27017",
+         "host" : "rs1.mongo-replicaset.com:27017",
          "arbiterOnly" : false,
          "buildIndexes" : true,
          "hidden" : false,
@@ -109,7 +109,7 @@ The replica set configuration object resembles the following:
       },
       {
          "_id" : 2,
-         "host" : "mongodb2.example.net:27017",
+         "host" : "rs2.mongo-replicaset.com:27017",
          "arbiterOnly" : false,
          "buildIndexes" : true,
          "hidden" : false,
@@ -163,4 +163,25 @@ rs.freeze(120)
 2. Make the current Primary step down
 ```
 rs.stepDown(120)
+```
+
+## Setting up DNS
+
+Record Type	| Record Name | IP |
+| ------------- | ------------- | ------------- |
+|A	| rs0.mongo-replicaset.com| 40.0.0.1 |
+|A	| rs1.mongo-replicaset.com| 40.0.0.2 |
+|A	| rs2.mongo-replicaset.com| 40.0.0.3 |
+|SRV | _mongodb._tcp.rs.mongo-replicaset.com | 0 0 27017 rs0.mongo-replicaset.com\nr0 0 27017 rs1.mongo-replicaset.com\n0 0 27017 rs2.mongo-replicaset.com |
+|TXT | rs | authSource=admin&replicaSet=rs|
+
+
+Now access the cluster with the following URL:
+
+```
+mongodb+srv://rs.mongo-replicaset.com/dbname
+```
+This URL automatically translates to:
+```
+mongodb://rs0.mongo-replicaset.com:27017,rs1.mongo-replicaset.com:27017,rs2.mongo-replicaset.com:27017/dbname?authSource=admin&replicaSet=rs
 ```
