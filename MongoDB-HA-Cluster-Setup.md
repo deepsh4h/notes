@@ -193,3 +193,14 @@ This URL automatically translates to:
 ```
 mongodb://rs0.mongo-replicaset.com:27017,rs1.mongo-replicaset.com:27017,rs2.mongo-replicaset.com:27017/dbname?authSource=admin&replicaSet=rs
 ```
+
+
+## Write Concern for Replica Sets
+
+Write concern for replica sets describe the number of data-bearing members (i.e. the primary and secondaries, but not arbiters) that must acknowledge a write operation before the operation returns as successful. A member can only acknowledge a write operation after it has received and applied the write successfully.
+
+[For Synchronous Replication] For replica sets, the write concern of ```w: "majority"``` requires acknowledgement that the write operations have propagated to a calculated majority of the data-bearing voting members. For most replica set configurations, w: "majority" is the default write concern. To learn how MongoDB determines the default write concern, see Implicit Default Write Concern.
+
+[For Semi-Syncronous Replication] Write operations with a write concern of ```w: 1``` require that only the primary replica set member acknowledge the write before returning write concern acknowledgment. You can specify an integer value greater than 1 to require acknowledgment from the primary and as many secondaries as needed to meet the specified value, up to the total number of data-bearing members in the replica set.
+
+[For Asynchronous Replication] Write operations with a write concern of ```w: 0``` require that no replica set member acknowledge the write before returning write concern acknowledgment. Requests no acknowledgment of the write operation.
