@@ -53,7 +53,7 @@ chown -R mongod:mongod /app/mongodb
 chown -R mongod:mongod /app/log/mongodb
 ```
 
-## Configuring the Replica Set
+## Configuring MongoDB instances
 
 1. Start each member of the replica set with the appropriate options in ```/app/mongodb/mongod.conf```:
 
@@ -109,7 +109,7 @@ sudo systemctl status mongod
 sudo systemctl enable mongod
 ```
 
-Connecting
+## Connecting and Configuring ReplicaSet
 
 1. Connect a mongo shell to one of the mongod instances.
 
