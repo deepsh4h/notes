@@ -20,31 +20,85 @@ Example:
 
 ## Installing MongoDB
 
-1. Import the public key used by the package management system
+1. We’ll store the binaries under ```/app.``` On the target machine, we enter the directory:
 ```
-wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
-```
-
-2. Create a /etc/apt/sources.list.d/mongodb-org-4.4.list
-```
-echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+cd /app
 ```
 
-3. Reload local package database and install MongoDB latest version.
+2. Download the Tar ball (Get the download URL from https://www.mongodb.com/try/download/community)
 ```
-sudo apt-get update && sudo apt-get install -y mongodb-org
+wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel80-4.4.16.tgz
+```
+
+3. Extract the tarball 
+```
+tar -xzvf mongodb-linux-x86_64-rhel80-4.4.16.tgz
+```
+4. Change Directory name to MongoDB
+```
+mv mongodb-linux-x86_64-rhel80-4.4.16 mongodb
+```
+5. Add MongoDB User
+```
+useradd mongod
+```
+6. We create directory where MongoDB will store its data
+```
+mkdir -p /app/mongodb/data
+mkdir -p /app/log/mongodb
+```
+7. Change folder permissions
+```
+chown -R mongod:mongod /app/mongodb
+chown -R mongod:mongod /app/log/mongodb
 ```
 
 ## Configuring the Replica Set
 
-1. Start each member of the replica set with the appropriate options in ```/etc/mongo/mongod.conf```:
+1. Start each member of the replica set with the appropriate options in ```/app/mongodb/mongod.conf```:
 
 ```
+storage:
+  dbPath: "/app/mongodb/data"
+  journal:
+    enabled: true
+systemLog:
+   destination: file
+   path: "/app/log/mongodb/mongod.log"
+   logAppend: false
+   logRotate: rename
 replication:
    replSetName: "rs0"
 net:
    bindIp: localhost,0.0.0.0
+   port: 27027
 ```
+2. Create the MongoDB Service
+```
+[Unit]
+Description=MongoDB
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+User=mongod
+Group=mongod
+
+ExecStart=/app/mongodb/bin/mongod --config /app/mongodb/mongod.conf
+
+[Install]
+WantedBy=multi-user.target
+```
+3. Reload the Systemctl Daemon
+```
+sudo systemctl daemon-reload
+```
+4. Allow MongoDB in SELinux to listen to non default port
+```
+sudo semanage port -a -t mongod_port_t -p tcp 27027
+```
+5. MongoDB Service Commands
 ```
 sudo systemctl start mongod
 ```
@@ -55,14 +109,15 @@ sudo systemctl status mongod
 sudo systemctl enable mongod
 ```
 
+Connecting
 
-2. Connect a mongo shell to one of the mongod instances.
+1. Connect a mongo shell to one of the mongod instances.
 
 ```
 mongo
 ```
 
-3. Initiate the replica set.
+2. Initiate the replica set.
 
 ```Note:- Run rs.initiate() on just one and only one mongod instance for the replica set.```
 
@@ -70,14 +125,14 @@ mongo
 rs.initiate( {
    _id : "rs0",
    members: [
-      { _id: 0, host: "rs0.mongo-replicaset.com:27017" },
-      { _id: 1, host: "rs1.mongo-replicaset.com:27017" },
-      { _id: 2, host: "rs2.mongo-replicaset.com:27017" }
+      { _id: 0, host: "rs0.mongo-replicaset.com:27027" },
+      { _id: 1, host: "rs1.mongo-replicaset.com:27027" },
+      { _id: 2, host: "rs2.mongo-replicaset.com:27027" }
    ]
 })
 ```
 
-4. View the replica set configuration.
+3. View the replica set configuration.
 
 Use rs.conf() to display the replica set configuration object:
 ```
@@ -92,7 +147,7 @@ The replica set configuration object resembles the following:
    "members" : [
       {
          "_id" : 0,
-         "host" : "rs0.mongo-replicaset.com:27017",
+         "host" : "rs0.mongo-replicaset.com:27027",
          "arbiterOnly" : false,
          "buildIndexes" : true,
          "hidden" : false,
@@ -105,7 +160,7 @@ The replica set configuration object resembles the following:
       },
       {
          "_id" : 1,
-         "host" : "rs1.mongo-replicaset.com:27017",
+         "host" : "rs1.mongo-replicaset.com:27027",
          "arbiterOnly" : false,
          "buildIndexes" : true,
          "hidden" : false,
@@ -118,7 +173,7 @@ The replica set configuration object resembles the following:
       },
       {
          "_id" : 2,
-         "host" : "rs2.mongo-replicaset.com:27017",
+         "host" : "rs2.mongo-replicaset.com:27027",
          "arbiterOnly" : false,
          "buildIndexes" : true,
          "hidden" : false,
@@ -148,7 +203,7 @@ The replica set configuration object resembles the following:
    }
 }
 ```
-5. Ensure that the replica set has a primary.
+4. Ensure that the replica set has a primary.
 
 Use rs.status() to identify the primary in the replica set.
 ```
@@ -181,7 +236,7 @@ Record Type	| Record Name | IP |
 |A	| rs0.mongo-replicaset.com| 40.0.0.1 |
 |A	| rs1.mongo-replicaset.com| 40.0.0.2 |
 |A	| rs2.mongo-replicaset.com| 40.0.0.3 |
-|SRV | _mongodb._tcp.rs.mongo-replicaset.com | 0 0 27017 rs0.mongo-replicaset.com<br />0 0 27017 rs1.mongo-replicaset.com<br />0 0 27017 rs2.mongo-replicaset.com |
+|SRV | _mongodb._tcp.rs.mongo-replicaset.com | 0 0 27027 rs0.mongo-replicaset.com<br />0 0 27027 rs1.mongo-replicaset.com<br />0 0 27027 rs2.mongo-replicaset.com |
 |TXT | rs | authSource=admin&replicaSet=rs|
 
 
@@ -192,7 +247,7 @@ mongodb+srv://rs.mongo-replicaset.com/dbname
 ```
 This URL automatically translates to:
 ```
-mongodb://rs0.mongo-replicaset.com:27017,rs1.mongo-replicaset.com:27017,rs2.mongo-replicaset.com:27017/dbname?authSource=admin&replicaSet=rs
+mongodb://rs0.mongo-replicaset.com:27027,rs1.mongo-replicaset.com:27027,rs2.mongo-replicaset.com:27027/dbname?authSource=admin&replicaSet=rs
 ```
 
 <b>Ref:</b> https://www.mongodb.com/developer/article/srv-connection-strings/
