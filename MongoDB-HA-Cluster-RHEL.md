@@ -90,7 +90,7 @@ Type=simple
 User=mongod
 Group=mongod
 
-ExecStart=/app/mongodb/bin/mongod --config /app/mongodb/mongod.conf
+ExecStart=/u01/mongodb/bin/mongod --config /u01/mongodb/mongod.conf
 
 [Install]
 WantedBy=multi-user.target
