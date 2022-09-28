@@ -20,7 +20,7 @@ Example:
 
 ## Installing MongoDB
 
-1. We’ll store the binaries under ```/app.``` On the target machine, we enter the directory:
+1. We’ll store the binaries under ```/u01.``` On the target machine, we enter the directory:
 ```
 cd /app
 ```
@@ -44,34 +44,39 @@ useradd mongod
 ```
 6. We create directory where MongoDB will store its data
 ```
-mkdir -p /app/mongodb/data
-mkdir -p /app/log/mongodb
+mkdir -p /u01/mongodb/data
+mkdir -p /u01/log/mongodb
 ```
 7. Change folder permissions
 ```
-chown -R mongod:mongod /app/mongodb
-chown -R mongod:mongod /app/log/mongodb
+chown -R mongod:mongod /u01/mongodb
+chown -R mongod:mongod /u01/log/mongodb
 ```
+7. Create Replica Key
+```
+openssl rand -base64 756 > /u01/mongodb/replica.key
+chmod 400 /u01/mongodb/replica.key
+```
+Copy this file: /u01/mongodb/replica.key from the created server to other servers in the same location
 
 ## Configuring MongoDB instances
 
 1. Start each member of the replica set with the appropriate options in ```/app/mongodb/mongod.conf```:
 
 ```
-storage:
-  dbPath: "/app/mongodb/data"
-  journal:
-    enabled: true
 systemLog:
    destination: file
-   path: "/app/log/mongodb/mongod.log"
-   logAppend: false
-   logRotate: rename
+   path: "/u01/log/mongodb/mongod.log"
+   logAppend: true
+storage:
+   dbPath: "/u01/mongodb/data"
+   journal:
+      enabled: true
+net:
+   bindIp: 0.0.0.0
+   port: 27027
 replication:
    replSetName: "rs0"
-net:
-   bindIp: localhost,0.0.0.0
-   port: 27027
 ```
 2. Create the MongoDB Service
 ```
@@ -209,16 +214,38 @@ Use rs.status() to identify the primary in the replica set.
 ```
 rs.status()
 ```
+5. Create the MongoDB Admin user
+```
+use admin;
+db.createUser(
+{	user: "admin”,
+	pwd: “<enter-your-password>”,
+
+	roles:[{role: "root" , db:"admin"}]})
+```
+6. Create the MongoDB Application User
+```
+use vls;
+db.createUser(
+  {
+    user: "vls",
+    pwd: "<enter-your-password>",
+    roles: [ { role: "readWrite", db: "vls" } ]
+  }
+)
+```
 ## Force a Member to be Primary Using Database Commands
 
-Setting Priority (from the PRIMARY)
+Setting Priority (from the PRIMARY) 
 ```
 cfg = rs.conf()
-cfg.members[0].priority = 0.5
-cfg.members[1].priority = 0.5
+cfg.members[0].priority = 3
+cfg.members[1].priority = 2
 cfg.members[2].priority = 1
 rs.reconfig(cfg)
 ```
+### NOTE: Higher the number, higher the priority.
+
 Force a Member to be Primary by Setting its Priority High
 1. Freeze the other secondary so that it doesnt become primary.
 ```
@@ -228,6 +255,27 @@ rs.freeze(120)
 ```
 rs.stepDown(120)
 ```
+
+### Update the mongod.conf file with the security configuration:
+```
+systemLog:
+   destination: file
+   path: "/u01/log/mongodb/mongod.log"
+   logAppend: true
+storage:
+   dbPath: "/u01/mongodb/data"
+   journal:
+      enabled: true
+net:
+   bindIp: 0.0.0.0
+   port: 27027
+replication:
+   replSetName: "rs0"
+security:
+   authorization: "enabled"
+   keyfile: /u01/mongodb/replica.key
+```
+Restart the MongoDB servers now.
 
 ## Setting up DNS
 
